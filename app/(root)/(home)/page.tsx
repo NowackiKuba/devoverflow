@@ -8,44 +8,52 @@ import { HomePageFilters } from '@/constants/filters';
 import Link from 'next/link';
 
 const questions = [
-  // {
-  //   _id: 1,
-  //   title: 'Best practices for data fetching',
-  //   tags: [
-  //     {
-  //       _id: 1,
-  //       name: 'Python',
-  //     },
-  //     {
-  //       _id: 2,
-  //       name: 'SQL',
-  //     },
-  //   ],
-  //   author: 'John Doe',
-  //   upvotes: 10,
-  //   views: 100,
-  //   answers: 5,
-  //   createdAt: '2021-08-01T18:30:00.000Z',
-  // },
-  // {
-  //   _id: 1,
-  //   title: 'How to center a div',
-  //   tags: [
-  //     {
-  //       _id: 1,
-  //       name: 'Css',
-  //     },
-  //     {
-  //       _id: 2,
-  //       name: 'HTMl',
-  //     },
-  //   ],
-  //   author: 'John Doe',
-  //   upvotes: 10,
-  //   views: 100,
-  //   answers: 5,
-  //   createdAt: '2021-08-01T18:30:00.000Z',
-  // },
+  {
+    _id: 1,
+    title: 'Best practices for data fetching',
+    tags: [
+      {
+        _id: '1',
+        name: 'Python',
+      },
+      {
+        _id: '2',
+        name: 'SQL',
+      },
+    ],
+    author: {
+      _id: '3',
+      name: 'John Doe',
+      picture: 'john-doe.jpg',
+    },
+    upvotes: 100000,
+    views: 3000000,
+    answers: [],
+    createdAt: new Date('2021-08-01T18:30:00.000Z'),
+  },
+  {
+    _id: 2,
+    title: 'How to center a div',
+    tags: [
+      {
+        _id: '4',
+        name: 'CSS',
+      },
+      {
+        _id: '5',
+        name: 'HTML',
+      },
+    ],
+    author: {
+      _id: '6',
+      name: 'Jane Smith',
+      picture: 'jane-smith.jpg',
+    },
+    upvotes: 5,
+    views: 50,
+    answers: [],
+    createdAt: new Date('2023-08-02T12:45:00.000Z'),
+  },
 ];
 
 export default function Home() {
@@ -79,12 +87,27 @@ export default function Home() {
         {questions.length > 0 ? (
           <>
             {questions.map((question) => (
-              <QuestionCard key={question._id} />
+              <QuestionCard
+                key={question._id}
+                _id={question._id}
+                title={question.title}
+                tags={question.tags}
+                author={question.author}
+                upvotes={question.upvotes}
+                views={question.views}
+                answers={question.answers}
+                createdAt={question.createdAt}
+              />
             ))}
           </>
         ) : (
           <>
-            <NoResult />
+            <NoResult
+              title="There's no question to show"
+              description='Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡'
+              link='/add-question'
+              linkTitle='Ask a Question'
+            />
           </>
         )}
       </div>

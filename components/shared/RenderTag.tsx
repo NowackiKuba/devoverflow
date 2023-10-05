@@ -4,8 +4,8 @@ import { Badge } from '../ui/badge';
 
 interface Props {
   name: string;
-  totalQuestions: number;
-  _id: number;
+  totalQuestions?: number;
+  _id: string;
   showCount?: boolean;
 }
 

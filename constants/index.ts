@@ -74,39 +74,39 @@ export const BADGE_CRITERIA = {
 
 export const TopQuestions = [
   {
-    _id: 1,
+    _id: '1',
     title:
       'Best practices for data fetching in a Next.js application with Server Side Rendering (SSR)?',
   },
-  { _id: 2, title: 'Can I get the course for free?' },
-  { _id: 3, title: 'Redux Toolkit Not Updating State as Expected' },
-  { _id: 4, title: 'Async/Await Fuynction Not Handling Errors Properly' },
-  { _id: 5, title: 'How do I use express as a custom server in NextJS?' },
+  { _id: '2', title: 'Can I get the course for free?' },
+  { _id: '3', title: 'Redux Toolkit Not Updating State as Expected' },
+  { _id: '4', title: 'Async/Await Fuynction Not Handling Errors Properly' },
+  { _id: '5', title: 'How do I use express as a custom server in NextJS?' },
 ];
 
 export const PopularTags = [
   {
-    _id: 1,
+    _id: '1',
     name: 'NEXTJS',
     totalQuestions: 6,
   },
   {
-    _id: 2,
+    _id: '2',
     name: 'REACT',
     totalQuestions: 4,
   },
   {
-    _id: 3,
+    _id: '3',
     name: 'TEST',
     totalQuestions: 3,
   },
   {
-    _id: 4,
+    _id: '4',
     name: 'NEXTJS',
     totalQuestions: 3,
   },
   {
-    _id: 5,
+    _id: '5',
     name: 'CSS',
     totalQuestions: 3,
   },
