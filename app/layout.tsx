@@ -3,6 +3,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Metadata } from 'next';
 import React from 'react';
 import { Inter, Space_Grotesk } from 'next/font/google';
+import { ThemeProvider } from '@/context/ThemeProvider';
 
 export const metadata: Metadata = {
   title: 'Devflow',
@@ -33,7 +34,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang='en'>
         <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
-          {children}
+          <ThemeProvider>{children}</ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
