@@ -6,12 +6,10 @@ import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
 import { Button } from '@/components/ui/button';
 import { HomePageFilters } from '@/constants/filters';
 import { getQuestions } from '@/lib/actions/question.actions';
-import console from 'console';
 import Link from 'next/link';
 
 export default async function Home() {
   const result = await getQuestions({});
-  console.log(result.questions);
   return (
     <>
       <div className='flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center'>
