@@ -4,9 +4,23 @@ import Tag from '../models/tag.model';
 import Question from '../models/question.model';
 import { connectToDB } from '../mongoose';
 import { CreateQuestionParams, GetQuestionsParams } from './shared.types';
+import User from '../models/user.model';
+import { revalidatePath } from 'next/cache';
 
 export async function getQuestions(params: GetQuestionsParams) {
-  const { page = 1, pageSize = 10, searchQuery = '', filter = '' } = params;
+  try {
+    connectToDB();
+
+    const questions = await Question.find({})
+      .populate({ path: 'tags', model: Tag })
+      .populate({ path: 'author', model: User })
+      .sort({ createdAt: 'desc' });
+
+    return { questions };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 export async function createQuestion(params: CreateQuestionParams) {
@@ -32,7 +46,9 @@ export async function createQuestion(params: CreateQuestionParams) {
     await Question.findByIdAndUpdate(question._id, {
       $push: { tags: { $each: tagDocuments } },
     });
+    revalidatePath(path);
   } catch (error) {
-    // if error throw error
+    console.log(error);
+    throw error;
   }
 }

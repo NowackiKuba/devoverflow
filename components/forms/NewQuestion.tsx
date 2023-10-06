@@ -22,8 +22,6 @@ import { Badge } from '../ui/badge';
 import Image from 'next/image';
 import { createQuestion } from '@/lib/actions/question.actions';
 import { usePathname, useRouter } from 'next/navigation';
-import { Router } from 'lucide-react';
-import router from 'next/router';
 
 const type: any = 'create';
 
@@ -54,6 +52,7 @@ const Question = ({ mongoUserId }: Props) => {
         content: values.explanation,
         tags: values.tags,
         author: JSON.parse(mongoUserId),
+        path: pathname,
       });
       router.push('/');
     } catch (error) {
