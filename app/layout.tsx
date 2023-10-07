@@ -1,4 +1,5 @@
 import './globals.css';
+import '../styles/prism.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Metadata } from 'next';
 import React from 'react';
