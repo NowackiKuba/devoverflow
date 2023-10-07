@@ -4,11 +4,11 @@ import Image from 'next/image';
 import React from 'react';
 
 interface CustomInputProps {
-  route: string;
-  iconPosition: string;
-  imgSrc: string;
+  route?: string;
+  iconPosition?: string;
+  imgSrc?: string;
   placeholder: string;
-  otherClasses: string;
+  otherClasses?: string;
 }
 
 const LocalSearchbar = ({
@@ -24,8 +24,8 @@ const LocalSearchbar = ({
     >
       {iconPosition === 'left' && (
         <Image
-          src={imgSrc}
-          alt={imgSrc}
+          src={imgSrc!}
+          alt={imgSrc!}
           width={24}
           height={24}
           className='cursor-pointer'
@@ -40,8 +40,8 @@ const LocalSearchbar = ({
       />
       {iconPosition === 'left' && (
         <Image
-          src={imgSrc}
-          alt={imgSrc}
+          src={imgSrc!}
+          alt={imgSrc!}
           width={24}
           height={24}
           className='cursor-pointer'
