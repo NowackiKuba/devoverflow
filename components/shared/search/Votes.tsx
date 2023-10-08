@@ -5,10 +5,11 @@ import {
 } from '@/lib/actions/question.actions';
 import { formatNumberWithExtension } from '@/lib/utils';
 import Image from 'next/image';
-import React from 'react';
-import { usePathname } from 'next/navigation';
+import React, { use, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { downvoteAnswer, upvoteAnswer } from '@/lib/actions/answer.action';
 import { toggleSaveQuestion } from '@/lib/actions/user.actions';
+import { viewQuestion } from '@/lib/actions/interaction.action';
 
 interface Props {
   type: string;
@@ -32,7 +33,7 @@ const Votes = ({
   hasSaved,
 }: Props) => {
   const pathname = usePathname();
-  // const router = useRouter();
+  const router = useRouter();
   const handleVote = async (action: string) => {
     if (!userId) {
       return null;
@@ -87,6 +88,13 @@ const Votes = ({
       path: pathname,
     });
   };
+
+  useEffect(() => {
+    viewQuestion({
+      questionId: JSON.parse(itemId),
+      userId: userId ? JSON.parse(userId) : undefined,
+    });
+  }, [itemId, userId, pathname, router]);
   return (
     <div className='flex gap-5'>
       <div className='flex-center gap-2.5'>

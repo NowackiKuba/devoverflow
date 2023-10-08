@@ -24,7 +24,6 @@ const AllAnswers = async ({
   filter,
 }: Props) => {
   const result = await getAnswers({ questionId });
-  console.log('test clg asd', result);
   return (
     <div className='mt-11'>
       <div className='flex items-center justify-between'>
