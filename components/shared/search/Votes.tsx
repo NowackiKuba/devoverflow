@@ -1,7 +1,14 @@
 'use client';
+import {
+  downvoteQuestion,
+  upvoteQuestion,
+} from '@/lib/actions/question.actions';
 import { formatNumberWithExtension } from '@/lib/utils';
 import Image from 'next/image';
 import React from 'react';
+import { usePathname } from 'next/navigation';
+import { downvoteAnswer, upvoteAnswer } from '@/lib/actions/answer.action';
+import { toggleSaveQuestion } from '@/lib/actions/user.actions';
 
 interface Props {
   type: string;
@@ -24,9 +31,62 @@ const Votes = ({
   hasDownvoted,
   hasSaved,
 }: Props) => {
-  const handleVote = (action: string) => {};
+  const pathname = usePathname();
+  // const router = useRouter();
+  const handleVote = async (action: string) => {
+    if (!userId) {
+      return null;
+    }
 
-  const handleSave = () => {};
+    if (action === 'upvote') {
+      if (type === 'Question') {
+        await upvoteQuestion({
+          questionId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted: hasUpvoted,
+          hasdownVoted: hasDownvoted,
+          path: pathname,
+        });
+      } else if (type === 'Answer') {
+        await upvoteAnswer({
+          answerId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted: hasUpvoted,
+          hasdownVoted: hasDownvoted,
+          path: pathname,
+        });
+      }
+      return null;
+    }
+    if (action === 'downvote') {
+      if (type === 'Question') {
+        await downvoteQuestion({
+          questionId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted: hasUpvoted,
+          hasdownVoted: hasDownvoted,
+          path: pathname,
+        });
+      } else if (type === 'Answer') {
+        await downvoteAnswer({
+          answerId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted: hasUpvoted,
+          hasdownVoted: hasDownvoted,
+          path: pathname,
+        });
+      }
+      return null;
+    }
+  };
+
+  const handleSave = async () => {
+    await toggleSaveQuestion({
+      userId: JSON.parse(userId),
+      questionId: JSON.parse(itemId),
+      path: pathname,
+    });
+  };
   return (
     <div className='flex gap-5'>
       <div className='flex-center gap-2.5'>
@@ -69,18 +129,20 @@ const Votes = ({
           </div>
         </div>
       </div>
-      <Image
-        src={
-          hasSaved
-            ? '/assets/icons/star-filled.svg'
-            : '/assets/icons/star-red.svg'
-        }
-        width={18}
-        height={18}
-        alt='star'
-        className='cursor-pointer'
-        onClick={() => handleSave()}
-      />
+      {type === 'Question' && (
+        <Image
+          src={
+            hasSaved
+              ? '/assets/icons/star-filled.svg'
+              : '/assets/icons/star-red.svg'
+          }
+          width={18}
+          height={18}
+          alt='star'
+          className='cursor-pointer'
+          onClick={() => handleSave()}
+        />
+      )}
     </div>
   );
 };
