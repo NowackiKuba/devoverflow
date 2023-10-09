@@ -41,6 +41,7 @@ const page = async ({ params, searchParams }: URLProps) => {
                   <ProfileLink
                     imgUrl='/assets/icons/link.svg'
                     title={result.user.portfolioWebsite}
+                    href={result.user.portfolioWebsite}
                   />
                 </>
               )}
@@ -59,7 +60,7 @@ const page = async ({ params, searchParams }: URLProps) => {
             </div>
             {result?.user.bio && (
               <p className='paragraph-regular text-dark400_light800 mt-8'>
-                bio
+                {result.user.bio}
               </p>
             )}
           </div>

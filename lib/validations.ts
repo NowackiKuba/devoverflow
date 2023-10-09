@@ -16,16 +16,19 @@ export const AnswerSchema = z.object({
 export const userSchema = z.object({
   name: z
     .string()
-    .min(3, { message: 'Name should be at least 3 characters' })
-    .max(20),
+    .min(5, { message: 'Name should be at least 5 characters' })
+    .max(50),
   username: z
     .string()
     .min(5, { message: 'Username should be at least 5 characters' })
-    .max(32),
-  portfolioLink: z.string().url(),
-  location: z.string().max(30),
+    .max(50),
+  portfolioWebsite: z.string().url(),
+  location: z
+    .string()
+    .min(5, { message: 'Location should be at least 5 characters' })
+    .max(30),
   bio: z
     .string()
-    .min(30, { message: 'Bio should be at least 30 characters' })
+    .min(10, { message: 'Bio should be at least 10 characters' })
     .max(150),
 });
