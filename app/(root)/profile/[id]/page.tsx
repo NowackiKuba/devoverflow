@@ -1,48 +1,92 @@
-import { getUserById, getUserStats } from '@/lib/actions/user.actions';
+import { getUserInfo } from '@/lib/actions/user.actions';
 import { dateToMonthYear } from '@/lib/utils';
 import Image from 'next/image';
-import { auth } from '@clerk/nextjs';
 import React from 'react';
+import { URLProps } from '@/types';
+import { SignedIn, auth } from '@clerk/nextjs';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ProfileLink from '@/components/shared/ProfileLink';
 
-const page = async ({ params }: { params: { id: string } }) => {
-  const user = await getUserById({ userId: params.id });
-  const { userId } = auth();
-  if (!userId) return null;
-  const userQuestions = await getUserStats(userId);
-  console.log(userQuestions);
+const page = async ({ params, searchParams }: URLProps) => {
+  const result = await getUserInfo({ userId: params.id });
+  const { userId: clerkId } = auth();
 
   return (
     <>
-      <div className='mt-11 flex w-full flex-col'>
-        <div className='flex gap-5'>
+      <div className='flex flex-col-reverse items-start justify-between sm:flex-row'>
+        <div className='flex flex-col items-start gap-4 lg:flex-row'>
           <Image
-            src={user.picture}
+            src={result?.user.picture}
             alt='user'
-            width={120}
-            height={120}
+            width={140}
+            height={140}
             className='rounded-full object-contain'
           />
-          <div className='flex-col'>
-            <h2 className='h2-bold text-dark200_light800'>{user.name}</h2>
+          <div className='mt-3'>
+            <h2 className='h2-bold text-dark100_light900'>
+              {result?.user.name}
+            </h2>
             <p className='paragraph-regular text-dark200_light800'>
-              @{user.username}
+              @{result?.user.username}
             </p>
 
-            <p className='mt-5 flex items-center gap-2 text-light-400'>
-              <Image
-                src='/assets/icons/calendar.svg'
-                alt='calendar'
-                height={20}
-                width={20}
+            <div className='mt-5 flex flex-wrap items-center justify-start gap-5'>
+              {result?.user.portfolioWebsite && (
+                <>
+                  <ProfileLink
+                    imgUrl='/assets/icons/link.svg'
+                    title={result.user.portfolioWebsite}
+                  />
+                </>
+              )}
+              {result?.user.location && (
+                <>
+                  <ProfileLink
+                    imgUrl='/assets/icons/location.svg'
+                    title={result.user.location}
+                  />
+                </>
+              )}
+              <ProfileLink
+                imgUrl='/assets/icons/calendar.svg'
+                title={dateToMonthYear(result?.user.joinedAt)}
               />
-              {dateToMonthYear(user.joinedAt)}
-            </p>
+            </div>
+            {result?.user.bio && (
+              <p className='paragraph-regular text-dark400_light800 mt-8'>
+                bio
+              </p>
+            )}
           </div>
         </div>
+        <div className='flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3'>
+          <SignedIn>
+            {clerkId === result?.user.clerkId && (
+              <Link href='/profile/edit'>
+                <Button className='paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3'>
+                  Edit profile
+                </Button>
+              </Link>
+            )}
+          </SignedIn>
+        </div>
       </div>
-      <div className='mt-24'>
-        <h3 className='h3-semibold text-dark300_light700'>Stats</h3>
-        <div className='mt-10 flex'></div>
+      Stats
+      <div className='mt-10 flex gap-10'>
+        <Tabs defaultValue='top-posts' className='flex-1'>
+          <TabsList className='background-light800_dark400 min-h-[42px] p-1'>
+            <TabsTrigger value='top-posts' className='tab'>
+              Top Posts
+            </TabsTrigger>
+            <TabsTrigger value='answers' className='tab'>
+              Answers
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value='top-posts'>POSTS</TabsContent>
+          <TabsContent value='answers'> Answers</TabsContent>
+        </Tabs>
       </div>
     </>
   );

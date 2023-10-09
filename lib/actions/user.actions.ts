@@ -10,12 +10,12 @@ import {
   GetAllUsersParams,
   GetSavedQuestionsParams,
   GetUserByIdParams,
-  GetUserStatsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from './shared.types';
 import Question from '../models/question.model';
 import Tag from '../models/tag.model';
+import Answer from '../models/answer.model';
 
 export async function getUserById(params: GetUserByIdParams) {
   try {
@@ -169,17 +169,21 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
   }
 }
 
-export async function getUserStats(params: GetUserStatsParams) {
+export async function getUserInfo(params: GetUserByIdParams) {
   try {
     connectToDB();
 
     const { userId } = params;
 
-    const userQuestions = await Question.find({ author: userId });
+    const user = await User.findOne({ clerkId: userId });
 
-    return userQuestions;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const totalQuestions = await Question.countDocuments({ author: user._id });
+    const totalAnswers = await Answer.countDocuments({ author: user._id });
+
+    return { user, totalAnswers, totalQuestions };
+  } catch (error) {}
 }
