@@ -10,6 +10,7 @@ import {
   GetAllUsersParams,
   GetSavedQuestionsParams,
   GetUserByIdParams,
+  GetUserStatsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from './shared.types';
@@ -162,6 +163,21 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     const savedQuestions = user.saved;
 
     return { questions: savedQuestions };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getUserStats(params: GetUserStatsParams) {
+  try {
+    connectToDB();
+
+    const { userId } = params;
+
+    const userQuestions = await Question.find({ author: userId });
+
+    return userQuestions;
   } catch (error) {
     console.log(error);
     throw error;
