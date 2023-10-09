@@ -31,20 +31,21 @@ interface Props {
 }
 
 const Question = ({ type, mongoUserId, questionDetails }: Props) => {
-  const parsedQuestionDetails = JSON.parse(questionDetails || '');
-  const groupedTags = parsedQuestionDetails.tags.map(
-    (tag: { name: string }) => tag.name
-  );
   const { mode } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const parsedQuestionDetails =
+    questionDetails && JSON.parse(questionDetails || '');
+  const groupedTags = parsedQuestionDetails?.tags.map(
+    (tag: { name: string }) => tag.name
+  );
   const form = useForm<z.infer<typeof questionsSchema>>({
     resolver: zodResolver(questionsSchema),
     defaultValues: {
-      title: parsedQuestionDetails.title || '',
-      explanation: parsedQuestionDetails.content || '',
+      title: parsedQuestionDetails?.title || ' ',
+      explanation: parsedQuestionDetails?.content || ' ',
       tags: groupedTags || [],
     },
   });
@@ -155,7 +156,7 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
                     editorRef.current = editor;
                   }}
                   onBlur={field.onBlur}
-                  initialValue={parsedQuestionDetails.content || ''}
+                  initialValue={parsedQuestionDetails?.content || ' '}
                   onEditorChange={(content) => field.onChange(content)}
                   init={{
                     height: 350,
