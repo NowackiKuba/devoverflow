@@ -121,6 +121,13 @@ export interface GetUserByIdParams {
   userId: string;
 }
 
+export interface GetUserQuestionsParams {
+  userId: string;
+  pageSize?: number;
+  page?: number;
+  filter?: string;
+}
+
 export interface GetAllUsersParams {
   page?: number;
   pageSize?: number;

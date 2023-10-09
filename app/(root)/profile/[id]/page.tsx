@@ -8,6 +8,9 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProfileLink from '@/components/shared/ProfileLink';
+import Stats from '@/components/shared/Stats';
+import QuestionsTab from '@/components/shared/QuestionsTab';
+import AnswersTab from '@/components/shared/AnswersTab';
 
 const page = async ({ params, searchParams }: URLProps) => {
   const result = await getUserInfo({ userId: params.id });
@@ -73,7 +76,10 @@ const page = async ({ params, searchParams }: URLProps) => {
           </SignedIn>
         </div>
       </div>
-      Stats
+      <Stats
+        questions={result!.totalQuestions}
+        answers={result!.totalAnswers}
+      />
       <div className='mt-10 flex gap-10'>
         <Tabs defaultValue='top-posts' className='flex-1'>
           <TabsList className='background-light800_dark400 min-h-[42px] p-1'>
@@ -84,8 +90,21 @@ const page = async ({ params, searchParams }: URLProps) => {
               Answers
             </TabsTrigger>
           </TabsList>
-          <TabsContent value='top-posts'>POSTS</TabsContent>
-          <TabsContent value='answers'> Answers</TabsContent>
+          <TabsContent value='top-posts'>
+            <QuestionsTab
+              userId={result?.user._id}
+              searchParams={searchParams}
+              clerkId={clerkId!}
+            />
+          </TabsContent>
+          <TabsContent value='answers' className='flex w-full flex-col gap-6'>
+            {' '}
+            <AnswersTab
+              userId={result?.user._id}
+              searchParams={searchParams}
+              clerkId={clerkId!}
+            />
+          </TabsContent>
         </Tabs>
       </div>
     </>

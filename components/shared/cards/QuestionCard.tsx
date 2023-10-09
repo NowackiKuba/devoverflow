@@ -13,7 +13,7 @@ interface Props {
   }[];
   author: {
     _id: string;
-    clerkId: string;
+    clerkId?: string;
     name: string;
     picture: string;
   };
@@ -46,7 +46,7 @@ const QuestionCard = ({
             </h3>
           </Link>
         </div>
-        {/* if signed in add elete and edit actions */}
+        {/* if signed in add delete and edit actions */}
       </div>
       <div className='mt-3.5 flex flex-wrap gap-2'>
         {tags.map((tag) => (

@@ -14,7 +14,6 @@ interface Props {
 
 const TagCard = async ({ tag }: Props) => {
   // const interactedTags = await getTopInteractedTags({ userId: user._id });
-  console.log(tag);
   return (
     <Link href={`/tags/${tag._id}`} className='shadow-light100_darknone'>
       <article className='background-light900_dark200 light-border flex w-full flex-col rounded-2xl border px-8 py-10 sm:w-[260px]'>
