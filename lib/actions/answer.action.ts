@@ -6,8 +6,11 @@ import { connectToDB } from '../mongoose';
 import {
   AnswerVoteParams,
   CreateAnswerParams,
+  DeleteAnswerParams,
   GetAnswersParams,
 } from './shared.types';
+import { Tag } from 'lucide-react';
+import Interaction from '../models/interaction.model';
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -104,4 +107,33 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
 
     revalidatePath(path);
   } catch (error) {}
+}
+
+export async function deleteAnswer(params: DeleteAnswerParams) {
+  try {
+    connectToDB();
+
+    const { answerId, path } = params;
+
+    const answer = await Answer.findById(answerId);
+
+    if (!answer) {
+      throw new Error('answer not found');
+    }
+
+    await Answer.deleteOne({
+      _id: answerId,
+    });
+
+    await Question.updateMany(
+      { _id: answer.question },
+      { $pull: { answer: answerId } }
+    );
+    await Interaction.deleteMany({ answer: answerId });
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
