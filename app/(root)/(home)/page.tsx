@@ -10,7 +10,6 @@ import { SearchParamsProps } from '@/types';
 import Link from 'next/link';
 
 export default async function Home({ searchParams }: SearchParamsProps) {
-  console.log('search params: ', searchParams);
   const result = await getQuestions({ searchQuery: searchParams.q });
 
   return (
