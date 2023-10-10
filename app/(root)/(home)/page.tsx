@@ -1,5 +1,6 @@
 import Filter from '@/components/shared/Filter';
 import NoResult from '@/components/shared/NoResult';
+import Pagination from '@/components/shared/Pagination';
 import QuestionCard from '@/components/shared/cards/QuestionCard';
 import HomeFilters from '@/components/shared/home/HomeFilters';
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
@@ -13,6 +14,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
   const result = await getQuestions({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
   });
 
   // TODO Create Fetch and action for recommendation system
@@ -70,6 +72,12 @@ export default async function Home({ searchParams }: SearchParamsProps) {
             />
           </>
         )}
+      </div>
+      <div className='mt-10'>
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result.isNext}
+        />
       </div>
     </>
   );
