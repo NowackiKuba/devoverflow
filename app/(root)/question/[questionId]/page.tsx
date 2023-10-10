@@ -13,7 +13,7 @@ import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import Votes from '@/components/shared/search/Votes';
 
-const page = async ({ params }: { params: { questionId: string } }) => {
+const page = async ({ params, searchParams }) => {
   const { userId } = auth();
   if (!userId) {
     redirect('/sign-in');
@@ -98,6 +98,8 @@ const page = async ({ params }: { params: { questionId: string } }) => {
         questionId={result._id}
         userId={mongoUser._id}
         totalAnswers={result.answers.length}
+        page={searchParams?.page}
+        filter={searchParams?.filter}
       />
       <Answer
         question={result.content}

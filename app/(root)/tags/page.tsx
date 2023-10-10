@@ -7,7 +7,10 @@ import { SearchParamsProps } from '@/types';
 import Link from 'next/link';
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
-  const results = await getAllTags({ searchQuery: searchParams.q });
+  const results = await getAllTags({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+  });
   return (
     <>
       <h1 className='h1-bold text-dark100_light900'>All Tags</h1>
