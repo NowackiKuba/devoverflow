@@ -12,14 +12,15 @@ import React from 'react';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import Votes from '@/components/shared/search/Votes';
+import { URLProps } from '@/types';
 
-const page = async ({ params, searchParams }) => {
+const page = async ({ params, searchParams }: URLProps) => {
   const { userId } = auth();
   if (!userId) {
     redirect('/sign-in');
   }
   const mongoUser = await getUserById({ userId });
-  const result = await getQuestionById({ questionId: params.questionId });
+  const result = await getQuestionById({ questionId: params.id });
   return (
     <>
       <div className='flex-start w-full flex-col'>
@@ -99,7 +100,7 @@ const page = async ({ params, searchParams }) => {
         questionId={result._id}
         userId={mongoUser._id}
         totalAnswers={result.answers.length}
-        page={searchParams?.page}
+        page={+searchParams.page!}
         filter={searchParams?.filter}
       />
       <Answer
