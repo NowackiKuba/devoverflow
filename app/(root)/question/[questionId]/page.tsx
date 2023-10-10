@@ -80,8 +80,9 @@ const page = async ({ params, searchParams }) => {
           textStyles='small-medium text-dark400_light800'
         />
       </div>
-
-      <ParseHTML data={result.content} />
+      <div className='break-all'>
+        <ParseHTML data={result.content} />
+      </div>
 
       <div className='mt-8 flex flex-wrap gap-2'>
         {result.tags.map((tag: any) => (
