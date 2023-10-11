@@ -9,6 +9,7 @@ import { HomePageFilters } from '@/constants/filters';
 import { getQuestions } from '@/lib/actions/question.actions';
 import { SearchParamsProps } from '@/types';
 import Link from 'next/link';
+import Loading from './loading';
 
 export default async function Home({ searchParams }: SearchParamsProps) {
   const result = await getQuestions({
@@ -16,8 +17,6 @@ export default async function Home({ searchParams }: SearchParamsProps) {
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
-
-  // TODO Create Fetch and action for recommendation system
 
   return (
     <>
