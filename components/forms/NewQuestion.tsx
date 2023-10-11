@@ -23,6 +23,7 @@ import Image from 'next/image';
 import { createQuestion, editQuestion } from '@/lib/actions/question.actions';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from '@/context/ThemeProvider';
+import { useToast } from '../ui/use-toast';
 
 interface Props {
   mongoUserId: string;
@@ -31,6 +32,7 @@ interface Props {
 }
 
 const Question = ({ type, mongoUserId, questionDetails }: Props) => {
+  const { toast } = useToast();
   const { mode } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
@@ -62,6 +64,11 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
           path: pathname,
         });
         router.push(`/question/${parsedQuestionDetails._id}`);
+
+        toast({
+          title: ' Hurra 🥳!',
+          description: 'Question edited successfully',
+        });
       } else {
         await createQuestion({
           title: values.title,
@@ -71,8 +78,19 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
           path: pathname,
         });
         router.push('/');
+
+        toast({
+          title: ' Hurra 🥳!',
+          description: 'Question created successfully',
+        });
       }
     } catch (error) {
+      toast({
+        title: ' Oh no 😖!',
+        description:
+          'There was an error creating your question, please try again later',
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -156,7 +174,7 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
                     editorRef.current = editor;
                   }}
                   onBlur={field.onBlur}
-                  initialValue={parsedQuestionDetails?.content || ' '}
+                  initialValue={parsedQuestionDetails?.content}
                   onEditorChange={(content) => field.onChange(content)}
                   init={{
                     height: 350,

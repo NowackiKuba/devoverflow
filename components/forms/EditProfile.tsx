@@ -18,6 +18,7 @@ import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
 import { usePathname, useRouter } from 'next/navigation';
 import { updateUser } from '@/lib/actions/user.actions';
+import { useToast } from '../ui/use-toast';
 
 interface Props {
   clerkId: string;
@@ -25,6 +26,7 @@ interface Props {
 }
 
 const EditProfile = ({ clerkId, user }: Props) => {
+  const { toast } = useToast();
   const router = useRouter();
   const pathname = usePathname();
   const parsedUser = JSON.parse(user);
@@ -58,8 +60,16 @@ const EditProfile = ({ clerkId, user }: Props) => {
       });
 
       router.back();
+      toast({
+        title: '🧑🏻‍💼 Profile edited successfully',
+      });
     } catch (error) {
-      console.log(error);
+      toast({
+        title: 'Oh no 😖!',
+        description:
+          'There was an error updating Your profile, please try again later!',
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmitting(true);
     }

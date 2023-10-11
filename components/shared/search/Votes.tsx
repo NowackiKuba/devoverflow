@@ -5,11 +5,12 @@ import {
 } from '@/lib/actions/question.actions';
 import { formatNumberWithExtension } from '@/lib/utils';
 import Image from 'next/image';
-import React, { use, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { downvoteAnswer, upvoteAnswer } from '@/lib/actions/answer.action';
 import { toggleSaveQuestion } from '@/lib/actions/user.actions';
 import { viewQuestion } from '@/lib/actions/interaction.action';
+import { useToast } from '@/components/ui/use-toast';
 
 interface Props {
   type: string;
@@ -32,6 +33,7 @@ const Votes = ({
   hasDownvoted,
   hasSaved,
 }: Props) => {
+  const { toast } = useToast();
   const pathname = usePathname();
   const router = useRouter();
   const handleVote = async (action: string) => {
@@ -48,6 +50,16 @@ const Votes = ({
           hasdownVoted: hasDownvoted,
           path: pathname,
         });
+        if (hasUpvoted) {
+          toast({
+            title: 'Upvote removed 😐',
+          });
+        } else {
+          toast({
+            title: 'Hurra 🥳',
+            description: 'Successfully upvoted 💖',
+          });
+        }
       } else if (type === 'Answer') {
         await upvoteAnswer({
           answerId: JSON.parse(itemId),
@@ -56,6 +68,16 @@ const Votes = ({
           hasdownVoted: hasDownvoted,
           path: pathname,
         });
+        if (hasUpvoted) {
+          toast({
+            title: 'Upvote removed 😐',
+          });
+        } else {
+          toast({
+            title: 'Hurra 🥳',
+            description: 'Successfully upvoted 💖',
+          });
+        }
       }
       return null;
     }
@@ -68,6 +90,15 @@ const Votes = ({
           hasdownVoted: hasDownvoted,
           path: pathname,
         });
+        if (hasDownvoted) {
+          toast({
+            title: 'Downvote removed 💖',
+          });
+        } else {
+          toast({
+            title: 'Successfully downvoted 😐',
+          });
+        }
       } else if (type === 'Answer') {
         await downvoteAnswer({
           answerId: JSON.parse(itemId),
@@ -76,6 +107,16 @@ const Votes = ({
           hasdownVoted: hasDownvoted,
           path: pathname,
         });
+
+        if (hasDownvoted) {
+          toast({
+            title: 'Downvote removed 💖',
+          });
+        } else {
+          toast({
+            title: 'Successfully downvoted 😐',
+          });
+        }
       }
       return null;
     }

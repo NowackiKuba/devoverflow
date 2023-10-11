@@ -19,6 +19,7 @@ import Image from 'next/image';
 import { createAnswer } from '@/lib/actions/answer.action';
 import { usePathname } from 'next/navigation';
 import { ReloadIcon } from '@radix-ui/react-icons';
+import { useToast } from '../ui/use-toast';
 
 interface Props {
   question: string;
@@ -27,6 +28,7 @@ interface Props {
 }
 
 const Answer = ({ question, questionId, authorId }: Props) => {
+  const { toast } = useToast();
   const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmittingAI, setIsSubmittingAI] = useState(false);
@@ -57,6 +59,9 @@ const Answer = ({ question, questionId, authorId }: Props) => {
 
         editor.setContent('');
       }
+      toast({
+        title: 'Answer submitted successfully',
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -87,9 +92,17 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         editor.setContent(formattedAnswer);
       }
 
-      // TODO Add toast notification
+      toast({
+        title: 'Hurra 🥳!',
+        description: '✨ Your answer has been generated successfully ✨.',
+      });
     } catch (error) {
-      console.log(error);
+      toast({
+        title: ' Oh no 😖!',
+        description:
+          'There was an error generating your answer, please try again later',
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmittingAI(false);
     }
