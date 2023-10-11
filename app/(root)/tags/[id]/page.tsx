@@ -3,7 +3,6 @@ import NoResult from '@/components/shared/NoResult';
 import Pagination from '@/components/shared/Pagination';
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
 import { getQuestionByTagId } from '@/lib/actions/tag.actions';
-
 import { URLProps } from '@/types';
 import React from 'react';
 
