@@ -5,7 +5,7 @@ import QuestionCard from '@/components/shared/cards/QuestionCard';
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
 import { QuestionFilters } from '@/constants/filters';
 import { getSavedQuestions } from '@/lib/actions/user.actions';
-import { IQuestions } from '@/lib/models/question.model';
+
 import { SearchParamsProps } from '@/types';
 import { auth } from '@clerk/nextjs';
 
@@ -40,7 +40,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
       <div className='mt-10 flex w-full flex-col gap-6'>
         {result.questions.length > 0 ? (
           <>
-            {result.questions.map((question: IQuestions) => (
+            {result.questions.map((question: any) => (
               <QuestionCard
                 key={question._id}
                 _id={question._id}

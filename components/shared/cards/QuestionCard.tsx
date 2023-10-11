@@ -75,27 +75,29 @@ const QuestionCard = ({
           href={`/profile/${author.clerkId}`}
           isAuthor
         />
-        <Metric
-          imgUrl='/assets/icons/like.svg'
-          alt='upvotes'
-          value={formatNumberWithExtension(upvotes.length)}
-          title=' Votes'
-          textStyles='small-medium text-dark400_light800'
-        />
-        <Metric
-          imgUrl='/assets/icons/message.svg'
-          alt='message'
-          value={formatNumberWithExtension(answers.length)}
-          title=' Answers'
-          textStyles='small-medium text-dark400_light800'
-        />
-        <Metric
-          imgUrl='/assets/icons/eye.svg'
-          alt='views'
-          value={formatNumberWithExtension(views)}
-          title=' Views'
-          textStyles='small-medium text-dark400_light800'
-        />
+        <div className='flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start'>
+          <Metric
+            imgUrl='/assets/icons/like.svg'
+            alt='upvotes'
+            value={formatNumberWithExtension(upvotes.length)}
+            title=' Votes'
+            textStyles='small-medium text-dark400_light800'
+          />
+          <Metric
+            imgUrl='/assets/icons/message.svg'
+            alt='message'
+            value={formatNumberWithExtension(answers.length)}
+            title=' Answers'
+            textStyles='small-medium text-dark400_light800'
+          />
+          <Metric
+            imgUrl='/assets/icons/eye.svg'
+            alt='views'
+            value={formatNumberWithExtension(views)}
+            title=' Views'
+            textStyles='small-medium text-dark400_light800'
+          />
+        </div>
       </div>
     </div>
   );

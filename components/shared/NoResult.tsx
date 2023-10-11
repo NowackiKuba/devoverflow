@@ -18,7 +18,7 @@ const NoResult = ({ title, description, link, linkTitle }: Props) => {
         width={270}
         height={200}
         alt='noresult'
-        className='object-containt block dark:hidden'
+        className='block object-contain dark:hidden'
       />
       <Image
         src='/assets/images/dark-illustration.png'

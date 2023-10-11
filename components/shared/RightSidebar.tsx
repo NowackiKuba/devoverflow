@@ -4,7 +4,6 @@ import React from 'react';
 import RenderTag from './RenderTag';
 import { getHotQuestions } from '@/lib/actions/question.actions';
 import { getTopPopularTags } from '@/lib/actions/tag.actions';
-import { PopularTags } from '@/constants';
 
 const RightSidebar = async () => {
   const hotQuestions = await getHotQuestions();

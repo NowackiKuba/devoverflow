@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { getTimestamp } from '@/lib/utils';
 import ParseHTML from './ParseHTML';
 import Votes from './search/Votes';
-import { SearchParamsProps } from '@/types';
+import Pagination from './Pagination';
 
 interface Props {
   questionId: string;
@@ -26,7 +26,7 @@ const AllAnswers = async ({
 }: Props) => {
   const result = await getAnswers({
     questionId,
-    page: page ? page + 1 : 1,
+    page: page ? +page : 1,
     sortBy: filter,
   });
   return (
@@ -38,49 +38,49 @@ const AllAnswers = async ({
       <div>
         {result.answers.map((answer) => (
           <article key={answer._id} className='light-border border-b py-10'>
-            <div className='flex items-center justify-between'>
-              <div className='mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2'>
-                <Link
-                  href={`/profile/${answer.author.clerkId}`}
-                  className='flex flex-1 items-start gap-1 sm:items-center'
-                >
-                  {/* // TODO FIX BUG WITH IMAGE */}
-                  <Image
-                    src={answer.author.picture}
-                    alt='profilephoto'
-                    width={18}
-                    height={18}
-                    className='rounded-full object-cover max-sm:mt-0.5'
-                  />
-                  <div className='flex flex-col sm:flex-row sm:items-center'>
-                    <p className='body-semibold text-dark300_light700 '>
-                      {answer.author.name}
-                    </p>
+            <div className='mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2'>
+              <Link
+                href={`/profile/${answer.author.clerkId}`}
+                className='flex flex-1 items-start gap-1 sm:items-center'
+              >
+                {/* // TODO FIX BUG WITH IMAGE */}
+                <Image
+                  src={answer.author.picture}
+                  alt='profile'
+                  width={18}
+                  height={18}
+                  className='rounded-full object-cover max-sm:mt-0.5'
+                />
+                <div className='flex flex-col sm:flex-row sm:items-center'>
+                  <p className='body-semibold text-dark300_light700 '>
+                    {answer.author.name}
+                  </p>
 
-                    <p className='small-regular text-light400_light500 ml-2 line-clamp-1'>
-                      {' '}
-                      answered {getTimestamp(answer.createdAt)}
-                    </p>
-                  </div>
-                </Link>
-                <div className='flex justify-end'>
-                  <Votes
-                    type='Answer'
-                    itemId={JSON.stringify(answer._id)}
-                    userId={JSON.stringify(userId)}
-                    upvotes={answer.upvotes.length}
-                    downvotes={answer.downvotes.length}
-                    hasUpvoted={answer.upvotes.includes(userId)}
-                    hasDownvoted={answer.downvotes.includes(userId)}
-                  />
+                  <p className='small-regular text-light400_light500 ml-2 line-clamp-1'>
+                    {' '}
+                    answered {getTimestamp(answer.createdAt)}
+                  </p>
                 </div>
+              </Link>
+              <div className='flex justify-end'>
+                <Votes
+                  type='Answer'
+                  itemId={JSON.stringify(answer._id)}
+                  userId={JSON.stringify(userId)}
+                  upvotes={answer.upvotes.length}
+                  downvotes={answer.downvotes.length}
+                  hasUpvoted={answer.upvotes.includes(userId)}
+                  hasDownvoted={answer.downvotes.includes(userId)}
+                />
               </div>
             </div>
+
             <div className='text-dark400_light800 break-all'>
               <ParseHTML data={answer.content}></ParseHTML>
             </div>
           </article>
         ))}
+        <Pagination isNext={result.isNext} pageNumber={page ? +page : 1} />
       </div>
     </div>
   );

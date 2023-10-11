@@ -6,10 +6,14 @@ import HomeFilters from '@/components/shared/home/HomeFilters';
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
 import { Button } from '@/components/ui/button';
 import { HomePageFilters } from '@/constants/filters';
-import { getQuestions } from '@/lib/actions/question.actions';
+import {
+  getQuestions,
+  getRecommendedQuestions,
+} from '@/lib/actions/question.actions';
 import { SearchParamsProps } from '@/types';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { auth } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
   title: 'Home | DevOverflow',
@@ -20,11 +24,30 @@ export const metadata: Metadata = {
 };
 
 export default async function Home({ searchParams }: SearchParamsProps) {
-  const result = await getQuestions({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1,
-  });
+  let result;
+
+  const { userId } = auth();
+
+  if (searchParams?.filter === 'recommended') {
+    if (userId) {
+      result = await getRecommendedQuestions({
+        userId,
+        searchQuery: searchParams.q,
+        page: searchParams.page ? +searchParams.page : 1,
+      });
+    } else {
+      result = {
+        questions: [],
+        isNext: false,
+      };
+    }
+  } else {
+    result = await getQuestions({
+      searchQuery: searchParams.q,
+      filter: searchParams.filter,
+      page: searchParams.page ? +searchParams.page : 1,
+    });
+  }
 
   return (
     <>
