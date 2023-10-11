@@ -9,6 +9,15 @@ import { HomePageFilters } from '@/constants/filters';
 import { getQuestions } from '@/lib/actions/question.actions';
 import { SearchParamsProps } from '@/types';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Home | DevOverflow',
+  description:
+    'DevOverflow is a community of developers helping each other. Join us, it only takes a minute.',
+  // ? I can pass some image here
+  // image: 'someimage'
+};
 
 export default async function Home({ searchParams }: SearchParamsProps) {
   const result = await getQuestions({
